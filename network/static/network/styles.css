@@ -1,0 +1,91 @@
+:root {
+    --blueinfo: #17a2b8;
+    --blueinfohover: #138496; 
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.pageid, .editbox {
+    display: none;
+}
+
+.editarea {
+    border-color: var(--blueinfo);
+}
+
+textarea {
+    color: var(--blueinfo) !important;
+}
+
+textarea:focus {
+    color: var(--blueinfo) !important;
+}
+
+footer {
+    height: 100px;
+    color: rgba(255,255,255,.5);
+}
+
+.loginout
+{
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: var(--blueinfohover) !important;
+}
+
+.heart:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.heart-author:hover {
+    color: grey;
+}
+
+.edit:hover {
+    opacity: 0.7;
+    text-decoration: none;
+}
+
+.logonav {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.viewprofile:hover {
+    color: var(--blueinfohover);
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: baseline;
+}
+
+.followersnum {
+    font-size: 1.5rem;
+}
+
+.activemine {
+    background-color: var(--blueinfo) !important;
+    color: white !important;
+}
+
+.activemine:hover, .no-drop:hover {
+    cursor: no-drop;
+}

@@ -1,0 +1,103 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <div class="container mt-5 pt-3">
+        <p class="pageid">{{ profiler }}</p>
+
+        <div class="flex-container text-center mb-5 text-info">
+            <div><h1 class="mb-0 font-weight-bold" id="profiler">{{ profiler }}</h1></div>
+            <div>
+                <p class="mb-0"><span class="followersnum">{{ following }}</span> Following · <span class="followersnum">{{ followers }}</span> Followers</p>
+            </div>
+            <div>
+                {% if user.is_authenticated %}
+                    {% if selfprofile %}
+                        <button id="follow-selfprofile" type="button" class="btn btn-info disabled no-drop">Follow</button>
+                    {% else %}
+                        {% if isfollower %}
+                            <button id="unfollow" type="button" class="btn btn-info">Unfollow</button>
+                        {% else %}
+                            <button id="follow" type="button" class="btn btn-info">Follow</button>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <button id="follow-notuser" type="button" class="btn btn-info disabled no-drop">Follow</button>
+                {% endif %}
+            </div>
+        </div>
+
+        {% for post in posts %}
+        <div class="border border-info border-bottom-0 border-left-0 border-right-0 text-info mb-2">
+            <div class="mt-4 py-2 px-4">
+
+                {% if user.is_authenticated and user == post.author %}
+                <button data-postid="{{ post.id }}" class="btn btn-sm btn-link text-info edit float-right">[ Edit ]</button>
+                {% endif %}
+
+                <p>
+                    <span class="font-weight-bold">{{ post.author }}</span>
+                    {% if post.timestamp == post.modified %}
+                        <span class="small"> · {{ post.timestamp }}</span>
+                    {% else %}
+                        <span class="small"> · {{ post.timestamp }} · <em>Edited: {{ post.modified }}</em></span>
+                    {% endif %}
+                </p>
+                <h4 class="mt4">{{ post.text }}</h4>
+
+                {% if user.is_authenticated %}
+                    {% if user == post.author %}
+                        <p class="small text-right">
+                            <i class='far fa-heart heart like-author no-drop'></i> {{ post.liked.all.count }}
+                        </p>
+                    {% else %}
+                        {% if user in post.liked.all %}
+                            <p class="small text-right">
+                                <i data-postid="{{ post.id }}" class='fas fa-heart text-danger heart heart-dislike'></i> {{ post.liked.all.count }}
+                            </p>
+                        {% else %}
+                            <p class="small text-right">
+                                <i data-postid="{{ post.id }}" class='far fa-heart heart heart-like'></i> {{ post.liked.all.count }}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <p class="small text-right">
+                        <i class='far fa-heart heart like-nonuser no-drop'></i> {{ post.liked.all.count }}
+                    </p>
+                {% endif %}
+                
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if posts.has_other_pages %}
+        <ul class="pagination justify-content-center mt-5">
+            {% if posts.has_previous %}
+                <li class="page-item"><a href="?page={{ posts.previous_page_number }}" class="page-link text-info">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link text-info">Previous</span></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+                {% if posts.number == i %}
+                    <li class="page-item active activemine"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link text-info" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+                <li class="page-item"><a href="?page={{ posts.next_page_number }}" class="page-link text-info">Next</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link text-info">Next</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+    </div><!-- END OF CONTAINER-->
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/network.js' %}"></script>
+{% endblock %}
